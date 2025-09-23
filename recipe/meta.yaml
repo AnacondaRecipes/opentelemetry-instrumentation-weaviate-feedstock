@@ -1,31 +1,34 @@
 {% set name = "opentelemetry-instrumentation-weaviate" %}
-{% set version = "0.47.3" %}
+{% set version = "0.47.2" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/opentelemetry_instrumentation_weaviate-{{ version }}.tar.gz
-  sha256: 90fe78f8a4c2c2ccd5844ec5ac698eeb050c2cccc4849183ee443f763f43ce0d
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace('-', '_')}}-{{ version }}.tar.gz
+  sha256: f5e9ada6108153a8fac01d492e6593b36c385b7ae328b6bea80da452ce2714ea
 
 build:
-  noarch: python
-  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   number: 0
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  skip: true  # [py<39]
 
 requirements:
   host:
-    - python {{ python_min }}
-    - poetry-core
     - pip
+    - python
+    - poetry-core
   run:
-    - python >={{ python_min }}
+    - python
     - opentelemetry-api >=1.28.0,<2.0.0
     - opentelemetry-instrumentation >=0.50b0
     - opentelemetry-semantic-conventions >=0.50b0
-    - opentelemetry-semantic-conventions-ai >=0.4.12,<0.5
+    - opentelemetry-semantic-conventions-ai >=0.4.13,<0.5
+  run_constrained:
+    - weaviate-client >=3.26,<5.0
 
+# Unable to run tests, weaviate-client is not in the main channel.
 test:
   imports:
     - opentelemetry.instrumentation.weaviate
@@ -33,7 +36,6 @@ test:
     - pip check
   requires:
     - pip
-    - python {{ python_min }}
 
 about:
   home: https://www.traceloop.com/openllmetry
@@ -41,8 +43,13 @@ about:
   doc_url: https://www.traceloop.com/docs/openllmetry/introduction
   summary: OpenTelemetry Weaviate instrumentation
   license: Apache-2.0
+  license_family: Apache
   license_file: LICENSE
+  description: |
+    This library allows tracing client-side calls to Weaviate vector DB sent with the official Weaviate library.
 
 extra:
   recipe-maintainers:
     - timkpaine
+  skip-lints:
+    - invalid_url
