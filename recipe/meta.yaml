@@ -1,5 +1,5 @@
 {% set name = "opentelemetry-instrumentation-weaviate" %}
-{% set version = "0.49.6" %}
+{% set version = "0.57.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,26 +7,26 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace('-', '_')}}-{{ version }}.tar.gz
-  sha256: e3fe2ca12dcdfadef4e9fa5371ed98a617aaef3399cd00b9d7e72d6986c2467a
+  sha256: 27226bb6ec801f5ccbac331b8265d425b4a8b6f2af2342a1f8197a37c2adf7e8
 
 build:
   number: 0
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-  skip: true  # [py<39]
+  skip: true  # [py<310]
 
 requirements:
   host:
     - pip
     - python
-    - poetry-core
+    - hatchling
   run:
     - python
     - opentelemetry-api >=1.38.0,<2.0.0
     - opentelemetry-instrumentation >=0.59b0
     - opentelemetry-semantic-conventions >=0.59b0
-    - opentelemetry-semantic-conventions-ai >=0.4.13,<0.5
+    - opentelemetry-semantic-conventions-ai >=0.5.1,<0.6.0
   run_constrained:
-    - weaviate-client >=3.26,<5.0
+    - weaviate-client >=3.26,<4.0
 
 # Unable to run tests, weaviate-client is not in the main channel.
 test:
