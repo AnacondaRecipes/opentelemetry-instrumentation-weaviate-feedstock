@@ -1,13 +1,13 @@
 {% set name = "opentelemetry-instrumentation-weaviate" %}
-{% set version = "0.57.0" %}
+{% set version = "0.62.1" %}
 
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace('-', '_')}}-{{ version }}.tar.gz
-  sha256: 27226bb6ec801f5ccbac331b8265d425b4a8b6f2af2342a1f8197a37c2adf7e8
+  sha256: c4d707dd8c25958971feed41ddca3cdabb977872697d4ddadbc20fc99e79b374
 
 build:
   number: 0
@@ -23,8 +23,8 @@ requirements:
     - python
     - opentelemetry-api >=1.38.0,<2.0.0
     - opentelemetry-instrumentation >=0.59b0
-    - opentelemetry-semantic-conventions >=0.59b0
     - opentelemetry-semantic-conventions-ai >=0.5.1,<0.6.0
+    - opentelemetry-semantic-conventions >=0.63b1
   run_constrained:
     - weaviate-client >=3.26,<4.0
 
